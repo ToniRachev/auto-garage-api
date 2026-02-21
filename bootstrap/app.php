@@ -10,6 +10,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -26,6 +28,18 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->render(function (NotFoundHttpException $e) {
+            $model = 'Resource';
+
+            // Check if previous exception is instance of
+            // ModelNotFoundException to return proper resource name
+            $previous = $e->getPrevious();
+            if ($previous instanceof ModelNotFoundException) {
+                $model = class_basename($previous->getModel());
+            }
+            return ApiResponse::notfound("$model not found");
+        });
+
         $exceptions->render(function (ValidationException $e): JsonResponse {
             return ApiResponse::validationError(errors: $e->errors());
         });
