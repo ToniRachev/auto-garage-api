@@ -1,5 +1,7 @@
 <?php
 
+use App\Exceptions\InvalidCredentials;
+use App\Exceptions\InvalidCredentialsException;
 use App\Responses\V1\ApiResponse;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
@@ -7,6 +9,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -23,11 +26,15 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->render(function (ValidationException $e) {
+        $exceptions->render(function (ValidationException $e): JsonResponse {
             return ApiResponse::validationError(errors: $e->errors());
         });
 
         $exceptions->render(function (QueryException $_) {
             return ApiResponse::serverError();
+        });
+
+        $exceptions->render(function (InvalidCredentialsException $_): JsonResponse {
+            return ApiResponse::invalidCredentials();
         });
     })->create();
