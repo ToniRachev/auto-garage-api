@@ -37,6 +37,14 @@ class ApiResponse
         return self::success($message, $data, 201);
     }
 
+    public static function noContent()
+    {
+        return self::success(
+            message: '',
+            code: 204,
+        );
+    }
+
     //Errors
 
     public static function serverError($message = 'Something went wrong. Please try again.')
@@ -53,6 +61,14 @@ class ApiResponse
     {
         return self::error(
             message: $message,
+            code: 401,
+        );
+    }
+
+    public static function unauthenticated(): JsonResponse
+    {
+        return self::error(
+            message: 'Unauthenticated',
             code: 401,
         );
     }
