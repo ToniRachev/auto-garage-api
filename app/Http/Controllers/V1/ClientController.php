@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Client\StoreClientRequest;
 use App\Http\Requests\V1\Client\UpdateClientRequest;
+use App\Http\Resources\V1\ClientResource;
 use App\Models\Client;
 use App\Responses\V1\ApiResponse;
 
@@ -34,7 +35,7 @@ class ClientController extends Controller
         $client = Client::create($request->validated());
         return ApiResponse::created(
             message: 'Client was created successfully',
-            data: $client
+            data: new ClientResource($client)
         );
     }
 
@@ -43,7 +44,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
+        return ApiResponse::ok(data: new ClientResource($client));
     }
 
     /**
