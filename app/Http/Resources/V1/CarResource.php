@@ -25,9 +25,10 @@ class CarResource extends JsonResource
             'model' => $this->model,
             'year' => $this->year,
             'clientId' => $this->client_id,
-            'client' => new ClientResource($this->whenLoaded('client')),
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
+            'client' => new ClientResource($this->whenLoaded('client')),
+            'orders' => OrderResource::collection($this->whenLoaded('orders')),
         ];
     }
 }
