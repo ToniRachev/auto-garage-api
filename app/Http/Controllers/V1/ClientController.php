@@ -38,7 +38,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        return ApiResponse::ok(data: new ClientResource($client));
+        return ApiResponse::ok(data: new ClientResource($client->load('cars.orders')));
     }
 
     /**
