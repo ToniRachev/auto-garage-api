@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\CarResource;
 use App\Models\Car;
 use App\Http\Requests\V1\Car\StoreCarRequest;
 use App\Http\Requests\V1\Car\UpdateCarRequest;
-
+use App\Responses\V1\ApiResponse;
 
 class CarController extends Controller
 {
@@ -14,23 +16,23 @@ class CarController extends Controller
      */
     public function index()
     {
-        //
+        $cars = Car::with('client')->paginate();
+        return ApiResponse::paginated($cars, CarResource::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreCarRequest $request)
     {
-        //
+        $car = Car::create($request->validated());
+        $car->load('client');
+
+        return ApiResponse::created(
+            'Car was successfully created.',
+            new CarResource($car)
+        );
     }
 
     /**
@@ -38,23 +40,22 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        //
+        return ApiResponse::ok(data: new CarResource($car->load('client')));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Car $car)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateCarRequest $request, Car $car)
     {
-        //
+        $car->fill($request->validated());
+
+        if ($car->isDirty()) {
+            $car->save();
+        }
+
+        return ApiResponse::ok(data: new CarResource($car));
     }
 
     /**
@@ -62,6 +63,7 @@ class CarController extends Controller
      */
     public function destroy(Car $car)
     {
-        //
+        $car->delete();
+        return ApiResponse::noContent();
     }
 }

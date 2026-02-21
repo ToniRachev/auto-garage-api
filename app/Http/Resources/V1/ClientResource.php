@@ -28,6 +28,7 @@ class ClientResource extends JsonResource
             'city' => $this->city,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
+            'cars' => CarResource::collection($this->whenLoaded('cars')),
         ];
     }
 }

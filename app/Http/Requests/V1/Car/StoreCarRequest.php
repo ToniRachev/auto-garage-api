@@ -11,7 +11,12 @@ class StoreCarRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this['client_id'] = $this->integer('clientId');
     }
 
     /**
@@ -22,7 +27,10 @@ class StoreCarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'client_id' => ['required', 'integer', 'exists:clients,id'],
+            'model' => ['required', 'string', 'min:1', 'max:255'],
+            'brand' => ['required', 'string', 'min:1', 'max:255'],
+            'year' => ['required', 'integer', 'min:1901', 'max:' . min(date('Y') + 1, 2155)],
         ];
     }
 }

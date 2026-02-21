@@ -3,6 +3,7 @@
 use App\Exceptions\InvalidCredentialsException;
 use App\Responses\V1\ApiResponse;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -44,7 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
             return ApiResponse::validationError(errors: $e->errors());
         });
 
-        $exceptions->render(function (QueryException $_) {
+        $exceptions->render(function (QueryException $e) {
             return ApiResponse::serverError();
         });
 

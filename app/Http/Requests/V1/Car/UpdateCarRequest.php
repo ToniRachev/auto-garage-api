@@ -11,7 +11,7 @@ class UpdateCarRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class UpdateCarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'client_id' => ['sometimes', 'integer', 'exists:clients,id'],
+            'model' => ['sometimes', 'string', 'min:1', 'max:255'],
+            'brand' => ['sometimes', 'string', 'min:1', 'max:255'],
+            'year' => ['sometimes', 'integer', 'min:1901', 'max:' . min(date('Y') + 1, 2155)],
         ];
     }
 }

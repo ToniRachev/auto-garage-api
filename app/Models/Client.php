@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $id
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $city
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * 
+ *
  */
 
 class Client extends Model
@@ -26,4 +27,9 @@ class Client extends Model
         'address',
         'city'
     ];
+
+    public function cars(): HasMany
+    {
+        return $this->hasMany(Client::class);
+    }
 }
