@@ -24,7 +24,7 @@ class UpdateClientRequest extends FormRequest
         return [
             'name' => ['sometimes', 'string', 'min:3', 'max:255'],
             'email' => ['sometimes', 'string', 'email', 'max:255', 'unique:clients'],
-            'phone' => ['sometimes', 'string', 'max:20'],
+            'phone' => ['sometimes', 'string', 'min:10', 'max:20', 'regex:/^([0-9\s\-\+\(\)]*)$/',],
             'address' => ['sometimes', 'string', 'min:3', 'max:255'],
             'city' => ['sometimes', 'string', 'min:2', 'max:255'],
         ];

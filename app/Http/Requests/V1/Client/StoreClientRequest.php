@@ -24,7 +24,7 @@ class StoreClientRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:clients'],
-            'phone' => ['required', 'string', 'max:20'],
+            'phone' => ['required', 'string', 'min:10', 'max:20', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
             'address' => ['required', 'string', 'min:3', 'max:255'],
             'city' => ['required', 'string', 'min:2', 'max:255'],
         ];
