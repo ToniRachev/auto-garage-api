@@ -26,6 +26,12 @@ class ApiResponse
 
 
     // Success
+
+    public static function ok($message = 'Ok', $data = null, $code = 200): JsonResponse
+    {
+        return self::success($message, $data, $code);
+    }
+
     public static function created($message = 'Resource was created successfully', $data = null): JsonResponse
     {
         return self::success($message, $data, 201);
@@ -41,5 +47,13 @@ class ApiResponse
     public static function validationError($message = 'Validation error', $errors = null): JsonResponse
     {
         return self::error($message, $errors, 422);
+    }
+
+    public static function invalidCredentials($message = 'Invalid email address or password.')
+    {
+        return self::error(
+            message: $message,
+            code: 401,
+        );
     }
 }
