@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\LoginAuthRequest;
-use App\Http\Requests\V1\RegisterAuthRequest;
+use App\Http\Requests\V1\Auth\LoginAuthRequest;
+use App\Http\Requests\V1\Auth\RegisterAuthRequest;
 use App\Http\Resources\V1\UserResource;
-use App\Models\User;
 use App\Responses\V1\ApiResponse;
 use App\Services\V1\AuthService;
 use Illuminate\Http\Request;

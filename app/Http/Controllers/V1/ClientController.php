@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\Client\StoreClientRequest;
+use App\Http\Requests\V1\Client\UpdateClientRequest;
 use App\Models\Client;
-use App\Http\Requests\StoreClientRequest;
-use App\Http\Requests\UpdateClientRequest;
+use App\Responses\V1\ApiResponse;
 
 class ClientController extends Controller
 {
@@ -29,7 +31,11 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        //
+        $client = Client::create($request->validated());
+        return ApiResponse::created(
+            message: 'Client was created successfully',
+            data: $client
+        );
     }
 
     /**

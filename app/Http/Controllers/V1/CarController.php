@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
-use App\Http\Requests\V1\StoreCarRequest;
-use App\Http\Requests\V1\UpdateCarRequest;
+use App\Http\Requests\V1\Car\StoreCarRequest;
+use App\Http\Requests\V1\Car\UpdateCarRequest;
+
 
 class CarController extends Controller
 {
