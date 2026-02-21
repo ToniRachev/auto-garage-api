@@ -15,8 +15,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::latest()->with('car.client')->paginate();
-        return ApiResponse::paginated($orders, OrderResource::class);
+        return ApiResponse::paginated(Order::latest()->paginate(), OrderResource::class);
     }
 
 
@@ -26,7 +25,6 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         $order = Order::create($request->validated());
-        $order->load('car');
         return ApiResponse::ok(
             'Order was created successfully',
             new OrderResource($order)
