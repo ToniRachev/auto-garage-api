@@ -2,6 +2,7 @@
 
 namespace App\Responses\V1;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiResponse
@@ -22,6 +23,25 @@ class ApiResponse
             'message' => $message,
             'errors' => $errors
         ], $code);
+    }
+
+    public static function paginated(LengthAwarePaginator $paginator, string $resource): JsonResponse
+    {
+        $items = $resource::collection($paginator->items());
+        return self::ok(
+            data: [
+                'items' => $items,
+                'pagination' => [
+                    'meta' => [
+                        'currentPage' => $paginator->currentPage(),
+                        'lastPage' => $paginator->lastPage(),
+                        'perPage' => $paginator->perPage(),
+                        'total' => $paginator->total(),
+                    ],
+                    'links' => $paginator->linkCollection(),
+                ]
+            ]
+        );
     }
 
 

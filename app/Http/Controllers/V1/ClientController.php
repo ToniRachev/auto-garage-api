@@ -16,16 +16,10 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $clients = Client::latest()->paginate();
+        return ApiResponse::paginated($clients, ClientResource::class);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -48,19 +42,17 @@ class ClientController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Client $client)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateClientRequest $request, Client $client)
     {
-        //
+        $client->fill($request->validated());
+
+        if ($client->isDirty()) {
+            $client->save();
+        }
+
+        return ApiResponse::ok(data: new ClientResource($client));
     }
 
     /**
@@ -68,6 +60,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
+        return ApiResponse::noContent();
     }
 }
