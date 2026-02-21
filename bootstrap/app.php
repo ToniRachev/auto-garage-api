@@ -1,8 +1,8 @@
 <?php
 
-use App\Exceptions\InvalidCredentials;
 use App\Exceptions\InvalidCredentialsException;
 use App\Responses\V1\ApiResponse;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -36,5 +36,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (InvalidCredentialsException $_): JsonResponse {
             return ApiResponse::invalidCredentials();
+        });
+
+        $exceptions->render(function (AuthenticationException $_): JsonResponse {
+            return ApiResponse::unauthenticated();
         });
     })->create();
