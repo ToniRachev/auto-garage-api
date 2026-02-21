@@ -72,4 +72,9 @@ class ApiResponse
             code: 401,
         );
     }
+
+    public static function notFound($message = 'Resource not found', $code = 404): JsonResponse
+    {
+        return self::error($message, $code, 404);
+    }
 }
