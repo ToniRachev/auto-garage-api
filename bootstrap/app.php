@@ -3,7 +3,6 @@
 use App\Exceptions\InvalidCredentialsException;
 use App\Responses\V1\ApiResponse;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Container\Attributes\Log;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
