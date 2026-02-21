@@ -16,8 +16,7 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars = Car::with('client')->paginate();
-        return ApiResponse::paginated($cars, CarResource::class);
+        return ApiResponse::paginated(Car::paginate(), CarResource::class);
     }
 
 
@@ -26,12 +25,10 @@ class CarController extends Controller
      */
     public function store(StoreCarRequest $request)
     {
-        $car = Car::create($request->validated());
-        $car->load('client');
 
         return ApiResponse::created(
             'Car was successfully created.',
-            new CarResource($car)
+            new CarResource(Car::create($request->validated()))
         );
     }
 
@@ -40,7 +37,7 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        return ApiResponse::ok(data: new CarResource($car->load('client')));
+        return ApiResponse::ok(data: new CarResource($car->load(['client', 'orders'])));
     }
 
 
