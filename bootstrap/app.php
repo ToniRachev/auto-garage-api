@@ -55,4 +55,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (AuthenticationException $_): JsonResponse {
             return ApiResponse::unauthenticated();
         });
+
+        $exceptions->render(function (Throwable $e) {
+            return ApiResponse::serverError();
+        });
     })->create();
